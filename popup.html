@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitch Chat Monitor Settings</title>
+  <style>
+    body {
+      width: 320px;
+      min-height: 400px;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+    }
+
+    .container {
+      padding: 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 12px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 18px;
+      color: #9146ff;
+    }
+
+    .header p {
+      margin: 4px 0 0 0;
+      font-size: 12px;
+      color: #bbb;
+    }
+
+    .setting-group {
+      margin-bottom: 20px;
+    }
+
+    .setting-group h3 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .setting-item {
+      margin-bottom: 12px;
+    }
+
+    .setting-item label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #ddd;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: #9146ff;
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 12px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #9146ff;
+    }
+
+    .select-wrapper::after {
+      content: "▼";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      pointer-events: none;
+      font-size: 10px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(20, 20, 20, 0.5);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-dot.active {
+      background: #00a82d;
+    }
+
+    .status-dot.inactive {
+      background: #666;
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: #ddd;
+    }
+
+    .status-text strong {
+      color: #fff;
+    }
+
+    .save-button {
+      width: 100%;
+      padding: 10px;
+      background: #9146ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .save-button:hover {
+      background: #772ce8;
+    }
+
+    .save-button:disabled {
+      background: #444;
+      cursor: not-allowed;
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+      text-align: center;
+    }
+
+    .footer p {
+      margin: 4px 0;
+      font-size: 11px;
+      color: #888;
+    }
+
+    .footer a {
+      color: #9146ff;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Chat Monitor</h1>
+      <p>Twitch Activity Settings</p>
+    </div>
+
+    <div class="status-indicator">
+      <div class="status-dot" id="status-dot"></div>
+      <div class="status-text">
+        Status: <strong id="status-text">Checking...</strong>
+      </div>
+    </div>
+
+    <form id="settings-form">
+      <div class="setting-group">
+        <h3>General Settings</h3>
+
+        <div class="setting-item">
+          <label for="enabled">Enable Extension</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="enabled">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+
+      </div>
+
+      <div class="setting-group">
+        <h3>Display Settings</h3>
+
+        <div class="setting-item">
+          <label for="position">Overlay Position</label>
+          <div class="select-wrapper">
+            <select id="position">
+              <option value="top-right">Top Right</option>
+              <option value="top-left">Top Left</option>
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label for="theme">Theme</label>
+          <div class="select-wrapper">
+            <select id="theme">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+              <option value="auto">Auto</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="save-button" id="save-button">
+        Save Settings
+      </button>
+    </form>
+
+    <div class="footer">
+      <p>v1.0.0 | <a href="#" id="reset-link">Reset to Defaults</a></p>
+      <p><a href="https://github.com/anshc22/twitch-chat-monitor" target="_blank">View on GitHub</a></p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

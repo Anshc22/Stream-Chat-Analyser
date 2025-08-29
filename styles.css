@@ -1,0 +1,1029 @@
+/* Twitch Chat Activity Monitor - Styles */
+
+/* Activity Overlay Styles */
+#twitch-chat-monitor-overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+/* Platform-specific font colors - High specificity to override other rules */
+#twitch-chat-monitor-overlay[data-platform="twitch"],
+#twitch-chat-monitor-overlay[data-platform="twitch"] * {
+  color: #9146ff !important;
+}
+
+#twitch-chat-monitor-overlay[data-platform="youtube"],
+#twitch-chat-monitor-overlay[data-platform="youtube"] * {
+  color: #ff0000 !important;
+}
+
+#twitch-chat-monitor-overlay[data-platform="kick"],
+#twitch-chat-monitor-overlay[data-platform="kick"] * {
+  color: #00ff00 !important;
+}
+
+#twitch-chat-monitor-overlay[data-platform="unknown"],
+#twitch-chat-monitor-overlay[data-platform="unknown"] * {
+  color: white !important;
+}
+
+/* Ensure drag-handle and close-button consistency across platforms */
+#twitch-chat-monitor-overlay .drag-handle,
+#twitch-chat-monitor-overlay .close-button {
+  color: inherit !important;
+}
+
+#twitch-chat-monitor-overlay .drag-handle:hover,
+#twitch-chat-monitor-overlay .close-button:hover {
+  color: inherit !important;
+  opacity: 0.8 !important;
+}
+
+#twitch-chat-monitor-overlay .drag-handle:active,
+#twitch-chat-monitor-overlay .close-button:active {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Force close button and history button to use default styling consistently across all platforms */
+#twitch-chat-monitor-overlay[data-platform="twitch"] .close-button,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .close-button,
+#twitch-chat-monitor-overlay[data-platform="kick"] .close-button,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .close-button,
+#twitch-chat-monitor-overlay[data-platform="twitch"] .history-button,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .history-button,
+#twitch-chat-monitor-overlay[data-platform="kick"] .history-button,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .history-button {
+  color: inherit !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: bold !important;
+}
+
+#twitch-chat-monitor-overlay[data-platform="twitch"] .close-button:hover,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .close-button:hover,
+#twitch-chat-monitor-overlay[data-platform="kick"] .close-button:hover,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .close-button:hover,
+#twitch-chat-monitor-overlay[data-platform="twitch"] .history-button:hover,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .history-button:hover,
+#twitch-chat-monitor-overlay[data-platform="kick"] .history-button:hover,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .history-button:hover {
+  color: inherit !important;
+  opacity: 0.8 !important;
+}
+
+#twitch-chat-monitor-overlay[data-platform="twitch"] .close-button:active,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .close-button:active,
+#twitch-chat-monitor-overlay[data-platform="kick"] .close-button:active,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .close-button:active,
+#twitch-chat-monitor-overlay[data-platform="twitch"] .history-button:active,
+#twitch-chat-monitor-overlay[data-platform="youtube"] .history-button:active,
+#twitch-chat-monitor-overlay[data-platform="kick"] .history-button:active,
+#twitch-chat-monitor-overlay[data-platform="unknown"] .history-button:active {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Timer maintains consistent purple color across all platforms and themes */
+#twitch-chat-monitor-overlay .timer-value,
+#twitch-chat-monitor-overlay[data-theme="light"] .timer-value,
+#twitch-chat-monitor-overlay[data-theme="auto"] .timer-value {
+  color: #888888 !important;
+}
+
+#twitch-chat-monitor-overlay:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.monitor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.monitor-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding: 0 2px;
+  position: relative;
+}
+
+.channel-thumbnail {
+  width: 24px;
+  height: 18px;
+  border-radius: 3px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.channel-name {
+  font-weight: 700;
+  text-transform: capitalize;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin-left: 6px;
+  line-height: 1.2;
+  max-height: 2.4em;
+}
+
+.drag-handle {
+  font-size: 10px;
+  color: inherit;
+  cursor: grab;
+  user-select: none;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.drag-handle:hover {
+  color: inherit;
+  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+  color: inherit;
+  opacity: 1;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: inherit;
+  padding: 0;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin-left: 4px;
+  position: relative;
+}
+
+.history-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  opacity: 0.8;
+}
+
+.history-button:active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0.95);
+}
+
+.close-button {
+
+  color: inherit;
+  padding: 0;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin-left: 4px;
+  position: relative;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: inherit;
+  opacity: 0.8;
+}
+
+.close-button:active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0.95);
+}
+
+/* Light theme styling for close button */
+#twitch-chat-monitor-overlay[data-theme="light"] .close-button {
+  background: rgba(0, 0, 0, 0.1);
+  color: #666;
+}
+
+#twitch-chat-monitor-overlay[data-theme="light"] .close-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+#twitch-chat-monitor-overlay[data-theme="light"] .close-button:active {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Auto theme styling for close button */
+#twitch-chat-monitor-overlay[data-theme="auto"] .close-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+}
+
+@media (prefers-color-scheme: light) {
+  #twitch-chat-monitor-overlay[data-theme="auto"] .close-button {
+    background: rgba(0, 0, 0, 0.1);
+    color: #666;
+  }
+
+  #twitch-chat-monitor-overlay[data-theme="auto"] .close-button:hover {
+    background: rgba(0, 0, 0, 0.2);
+    color: #333;
+  }
+
+  #twitch-chat-monitor-overlay[data-theme="auto"] .close-button:active {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+  grid-column: 1 / -1;
+}
+
+.timer-value {
+  font-size: 11px;
+  color: #9146ff;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.monitor-stats {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat .value {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat .unit {
+  font-size: 10px;
+  color: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* Position variations */
+#twitch-chat-monitor-overlay[data-position="top-left"] {
+  top: 20px;
+  left: 20px;
+  right: auto;
+}
+
+#twitch-chat-monitor-overlay[data-position="bottom-right"] {
+  top: auto;
+  bottom: 20px;
+  right: 20px;
+}
+
+#twitch-chat-monitor-overlay[data-position="bottom-left"] {
+  top: auto;
+  bottom: 20px;
+  left: 20px;
+  right: auto;
+}
+
+/* Light theme support */
+#twitch-chat-monitor-overlay[data-theme="light"] {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#twitch-chat-monitor-overlay[data-theme="light"] .monitor-header {
+  color: #666;
+}
+
+#twitch-chat-monitor-overlay[data-theme="light"] .stat .unit {
+  color: #999;
+}
+
+/* Loading state */
+#twitch-chat-monitor-overlay[data-loading="true"] .stat .value {
+  opacity: 0.5;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Error state */
+#twitch-chat-monitor-overlay[data-error="true"] {
+  background: rgba(220, 53, 69, 0.9);
+  border-color: rgba(220, 53, 69, 0.3);
+}
+
+#twitch-chat-monitor-overlay[data-error="true"] .stat .value {
+  color: #ff6b7d;
+}
+
+/* Disabled state */
+#twitch-chat-monitor-overlay[data-disabled="true"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Dragging state */
+#twitch-chat-monitor-overlay.dragging {
+  opacity: 0.9;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  transform: rotate(1deg);
+  transition: none;
+}
+
+#twitch-chat-monitor-overlay.dragging .drag-handle {
+  color: #9146ff;
+  background: rgba(145, 70, 255, 0.2);
+}
+
+/* Enhanced drag cursor - only on drag handle */
+#twitch-chat-monitor-overlay {
+  cursor: default;
+}
+
+#twitch-chat-monitor-overlay .drag-handle {
+  cursor: grab;
+}
+
+#twitch-chat-monitor-overlay.dragging .drag-handle {
+  cursor: grabbing !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #twitch-chat-monitor-overlay {
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    min-width: 140px;
+    font-size: 12px;
+  }
+
+  #twitch-chat-monitor-overlay[data-position="top-left"] {
+    left: 10px;
+  }
+
+  #twitch-chat-monitor-overlay[data-position="bottom-right"] {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  #twitch-chat-monitor[data-position="bottom-left"] {
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .monitor-stats {
+    gap: 12px;
+  }
+
+  .stat .value {
+    font-size: 16px;
+  }
+
+  .stat .unit {
+    font-size: 9px;
+  }
+
+  .channel-thumbnail {
+    width: 20px;
+    height: 15px;
+    margin-right: 4px;
+  }
+
+  .channel-name {
+    font-size: 11px;
+    margin-left: 4px;
+  }
+
+  .drag-handle {
+  font-size: 9px;
+}
+
+/* History Table Dropdown Styles */
+#twitch-chat-history-table {
+  position: fixed;
+  z-index: 10001;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.96) 0%, rgba(20, 20, 20, 0.96) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  display: none;
+  max-height: 320px;
+  overflow: hidden;
+  color: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.history-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 100%);
+  position: relative;
+}
+
+.history-table-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+.history-table-title {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.history-table-close {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.history-table-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-table-close:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.history-table-close:hover::before {
+  opacity: 1;
+}
+
+.history-table-close:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.history-table-content {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 0 4px;
+}
+
+#history-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 8px;
+  margin: 0;
+  line-height: 1.3;
+}
+
+#history-table thead th {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.12) 100%);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4px 6px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#history-table tbody td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.8);
+  vertical-align: middle;
+  font-size: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+#history-table tbody tr {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+#history-table tbody tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+#history-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.06) 100%);
+  transform: translateX(2px);
+}
+
+#history-table tbody tr:hover::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#history-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+#history-table tbody tr:nth-child(even):hover {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 100%);
+}
+
+.streamer-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 120px;
+}
+
+.history-avatar {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.history-avatar:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.streamer-cell span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.platform-badge {
+  display: inline-block;
+  padding: 1px 4px;
+  border-radius: 6px;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.platform-badge.platform-twitch {
+  background: linear-gradient(135deg, rgba(145, 70, 255, 0.2) 0%, rgba(145, 70, 255, 0.4) 100%);
+  color: #9146ff;
+  border-color: rgba(145, 70, 255, 0.4);
+}
+
+.platform-badge.platform-youtube {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.2) 0%, rgba(255, 0, 0, 0.4) 100%);
+  color: #ff0000;
+  border-color: rgba(255, 0, 0, 0.4);
+}
+
+.platform-badge.platform-kick {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.2) 0%, rgba(0, 255, 0, 0.4) 100%);
+  color: #00ff00;
+  border-color: rgba(0, 255, 0, 0.4);
+}
+
+.platform-badge.platform-unknown {
+  background: linear-gradient(135deg, rgba(128, 128, 128, 0.2) 0%, rgba(128, 128, 128, 0.4) 100%);
+  color: #888;
+  border-color: rgba(128, 128, 128, 0.4);
+}
+
+.no-data {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  padding: 16px 8px;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+
+
+.platform-twitch {
+  background: rgba(145, 70, 255, 0.2);
+  color: #a970ff;
+  border: 1px solid rgba(145, 70, 255, 0.3);
+}
+
+.platform-youtube {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.platform-kick {
+  background: rgba(84, 105, 212, 0.2);
+  color: #7c8ce9;
+  border: 1px solid rgba(84, 105, 212, 0.3);
+}
+
+.platform-unknown {
+  background: rgba(128, 128, 128, 0.2);
+  color: #a0a0a0;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* Responsive table styles */
+@media (max-width: 768px) {
+  #twitch-chat-history-table {
+    max-height: 300px;
+    width: 95vw !important;
+    left: 2.5vw !important;
+  }
+
+  .history-table-content {
+    max-height: 250px;
+  }
+
+  #history-table {
+    font-size: 11px;
+  }
+
+  #history-table thead th,
+  #history-table tbody td {
+    padding: 4px 8px;
+  }
+
+  .streamer-cell {
+    max-width: 120px;
+  }
+
+  .history-avatar {
+    width: 20px;
+    height: 20px;
+  }
+
+  .history-table-header {
+    padding: 8px 12px;
+  }
+
+  .history-table-title {
+    font-size: 12px;
+  }
+}
+
+/* Theme support for dropdown table */
+#twitch-chat-history-table[data-theme="light"] {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+#twitch-chat-history-table[data-theme="light"] .history-table-header {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+#twitch-chat-history-table[data-theme="light"] .history-table-title {
+  color: #1a1a1a;
+}
+
+#twitch-chat-history-table[data-theme="light"] .history-table-close {
+  color: #6c757d;
+}
+
+#twitch-chat-history-table[data-theme="light"] .history-table-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
+}
+
+#twitch-chat-history-table[data-theme="light"] #history-table thead th {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+#twitch-chat-history-table[data-theme="light"] #history-table tbody td {
+  color: #212529;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+#twitch-chat-history-table[data-theme="light"] #history-table tbody tr:hover {
+  background: rgba(145, 70, 255, 0.08);
+}
+
+#twitch-chat-history-table[data-theme="light"] .no-data {
+  color: #6c757d;
+}
+
+/* Platform-specific history table theming */
+#twitch-chat-history-table[data-platform="twitch"] {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.96) 0%, rgba(20, 20, 20, 0.96) 100%);
+  border-color: rgba(145, 70, 255, 0.2);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(145, 70, 255, 0.1),
+    inset 0 1px 0 rgba(145, 70, 255, 0.05);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] .history-table-header {
+  background: linear-gradient(90deg, rgba(145, 70, 255, 0.05) 0%, rgba(145, 70, 255, 0.1) 50%, rgba(145, 70, 255, 0.05) 100%);
+  border-color: rgba(145, 70, 255, 0.15);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] .history-table-header::before {
+  background: linear-gradient(45deg, transparent 30%, rgba(145, 70, 255, 0.08) 50%, transparent 70%);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] .history-table-title {
+  color: rgba(145, 70, 255, 0.95);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] #history-table thead th {
+  background: linear-gradient(135deg, rgba(145, 70, 255, 0.08) 0%, rgba(145, 70, 255, 0.15) 100%);
+  color: rgba(145, 70, 255, 0.9);
+  border-color: rgba(145, 70, 255, 0.2);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] #history-table tbody td {
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(145, 70, 255, 0.08);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] #history-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(145, 70, 255, 0.05) 0%, rgba(145, 70, 255, 0.1) 100%);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] #history-table tbody tr:hover::before {
+  background: rgba(145, 70, 255, 0.3);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.96) 0%, rgba(20, 20, 20, 0.96) 100%);
+  border-color: rgba(255, 0, 0, 0.2);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 0, 0, 0.05);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] .history-table-header {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 0, 0, 0.1) 50%, rgba(255, 0, 0, 0.05) 100%);
+  border-color: rgba(255, 0, 0, 0.15);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] .history-table-header::before {
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 0, 0, 0.08) 50%, transparent 70%);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] .history-table-title {
+  color: rgba(255, 0, 0, 0.95);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] #history-table thead th {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(255, 0, 0, 0.15) 100%);
+  color: rgba(255, 0, 0, 0.9);
+  border-color: rgba(255, 0, 0, 0.2);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] #history-table tbody td {
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 0, 0, 0.08);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] #history-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 0, 0, 0.1) 100%);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] #history-table tbody tr:hover::before {
+  background: rgba(255, 0, 0, 0.3);
+}
+
+#twitch-chat-history-table[data-platform="kick"] {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.96) 0%, rgba(20, 20, 20, 0.96) 100%);
+  border-color: rgba(0, 255, 0, 0.2);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(0, 255, 0, 0.1),
+    inset 0 1px 0 rgba(0, 255, 0, 0.05);
+}
+
+#twitch-chat-history-table[data-platform="kick"] .history-table-header {
+  background: linear-gradient(90deg, rgba(0, 255, 0, 0.05) 0%, rgba(0, 255, 0, 0.1) 50%, rgba(0, 255, 0, 0.05) 100%);
+  border-color: rgba(0, 255, 0, 0.15);
+}
+
+#twitch-chat-history-table[data-platform="kick"] .history-table-header::before {
+  background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 0, 0.08) 50%, transparent 70%);
+}
+
+#twitch-chat-history-table[data-platform="kick"] .history-table-title {
+  color: rgba(0, 255, 0, 0.95);
+}
+
+#twitch-chat-history-table[data-platform="kick"] #history-table thead th {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.08) 0%, rgba(0, 255, 0, 0.15) 100%);
+  color: rgba(0, 255, 0, 0.9);
+  border-color: rgba(0, 255, 0, 0.2);
+}
+
+#twitch-chat-history-table[data-platform="kick"] #history-table tbody td {
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 255, 0, 0.08);
+}
+
+#twitch-chat-history-table[data-platform="kick"] #history-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(0, 255, 0, 0.05) 0%, rgba(0, 255, 0, 0.1) 100%);
+}
+
+#twitch-chat-history-table[data-platform="kick"] #history-table tbody tr:hover::before {
+  background: rgba(0, 255, 0, 0.3);
+}
+
+/* Custom scrollbar for history table */
+.history-table-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-table-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.history-table-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.history-table-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Platform-specific scrollbar colors */
+#twitch-chat-history-table[data-platform="twitch"] .history-table-content::-webkit-scrollbar-thumb {
+  background: rgba(145, 70, 255, 0.3);
+}
+
+#twitch-chat-history-table[data-platform="twitch"] .history-table-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(145, 70, 255, 0.5);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] .history-table-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 0, 0, 0.3);
+}
+
+#twitch-chat-history-table[data-platform="youtube"] .history-table-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 0, 0, 0.5);
+}
+
+#twitch-chat-history-table[data-platform="kick"] .history-table-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.3);
+}
+
+#twitch-chat-history-table[data-platform="kick"] .history-table-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 0, 0.5);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  #twitch-chat-monitor-overlay {
+    border: 2px solid white;
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  #twitch-chat-monitor-overlay[data-theme="light"] {
+    border: 2px solid black;
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  #twitch-chat-monitor-overlay,
+  #twitch-chat-monitor-overlay:hover {
+    transition: none;
+  }
+
+  #twitch-chat-monitor-overlay[data-loading="true"] .stat .value {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* Print styles - hide overlay when printing */
+@media print {
+  #twitch-chat-monitor-overlay {
+    display: none !important;
+  }
+}
+}

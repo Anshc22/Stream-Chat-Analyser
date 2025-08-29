@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="9" fill="#9146ff"/>
+  <path d="M12 18h24v3H12v-3z" fill="white"/>
+  <path d="M12 24h18v3H12v-3z" fill="white"/>
+  <path d="M12 30h12v3H12v-3z" fill="white"/>
+  <circle cx="36" cy="12" r="6" fill="#ff6b35"/>
+  <text x="36" y="15" font-family="Arial" font-size="9" fill="white" text-anchor="middle">72</text>
+</svg>
