@@ -649,7 +649,7 @@ class TwitchChatMonitor {
 
     console.warn(`Multi-Platform Chat Monitor: No chat container found for ${this.currentPlatform} with known selectors`);
     // Log all available selectors that were tried
-    console.log(`Multi-Platform Chat Monitor: Tried selectors for ${this.currentPlatform}:`, selectors);
+    console.log(`Multi-Platform Chat Monitor: Tried selectors for ${this.currentPlatform}:`, JSON.stringify(selectors));
     return null;
   }
 
@@ -704,12 +704,12 @@ class TwitchChatMonitor {
 
     messageElements.forEach(messageElement => {
       if (this.isNewMessage(messageElement)) {
-        console.log(`Multi-Platform Chat Monitor: Processing ${this.currentPlatform} message element:`, messageElement.outerHTML?.substring(0, 300) + '...');
+        console.log(`Multi-Platform Chat Monitor: Processing ${this.currentPlatform} message element:`, messageElement.outerHTML?.substring(0, 300).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '...');
 
         const username = this.extractUsername(messageElement, doc);
         if (!username) {
           // Log more details for debugging
-          console.log(`Multi-Platform Chat Monitor: Failed to extract username from ${this.currentPlatform} message element:`, messageElement.outerHTML?.substring(0, 200) + '...');
+          console.log(`Multi-Platform Chat Monitor: Failed to extract username from ${this.currentPlatform} message element:`, messageElement.outerHTML?.substring(0, 200).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '...');
           console.log(`Multi-Platform Chat Monitor: Recording message without username from ${this.currentPlatform}`);
         } else {
           console.log(`Multi-Platform Chat Monitor: Successfully extracted username "${username}" from ${this.currentPlatform}`);
@@ -721,11 +721,11 @@ class TwitchChatMonitor {
 
     // Only check if the node itself is a message if we haven't already processed message elements within it
     if (!processedMessage && this.isMessageElement(node, doc)) {
-      console.log(`Multi-Platform Chat Monitor: Processing ${this.currentPlatform} node as message:`, node.outerHTML?.substring(0, 300) + '...');
+      console.log(`Multi-Platform Chat Monitor: Processing ${this.currentPlatform} node as message:`, node.outerHTML?.substring(0, 300).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '...');
 
       const username = this.extractUsername(node, doc);
       if (!username) {
-        console.log(`Multi-Platform Chat Monitor: Failed to extract username from ${this.currentPlatform} node:`, node.outerHTML?.substring(0, 200) + '...');
+        console.log(`Multi-Platform Chat Monitor: Failed to extract username from ${this.currentPlatform} node:`, node.outerHTML?.substring(0, 200).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '...');
         console.log(`Multi-Platform Chat Monitor: Recording message without username from ${this.currentPlatform} node`);
       } else {
         console.log(`Multi-Platform Chat Monitor: Successfully extracted username "${username}" from ${this.currentPlatform} node`);
@@ -1262,36 +1262,113 @@ class TwitchChatMonitor {
     // For initial load, we'll set a placeholder and update it after page loads
     const thumbnailUrl = this.getChannelThumbnail(channelName);
 
-    this.overlay.innerHTML = `
-      <div class="monitor-container">
-        <div class="monitor-header">
-          <img class="channel-thumbnail" src="${thumbnailUrl}" alt="${channelName} thumbnail" onerror="this.style.display='none'">
-          <span class="channel-name">${channelName}</span>
-          <div class="header-actions">
-            <button class="history-button" id="history-button" title="Download Chat History CSV">💾</button>
-            <button class="close-button" id="close-button" title="Close Extension">×</button>
-            <span class="drag-handle">⋮⋮</span>
-          </div>
-        </div>
-        <div class="monitor-stats">
-          <div class="stat">
-            <span class="value" id="mpm-value">0</span>
-            <span class="unit">msg/min</span>
-          </div>
-          <div class="stat">
-            <span class="value" id="mps-value">0</span>
-            <span class="unit">msg/sec</span>
-          </div>
-          <div class="stat">
-            <span class="value" id="unique-value">0</span>
-            <span class="unit">unique</span>
-          </div>
-          <div class="timer-display">
-            <span class="timer-value" id="timer-value">00:00:00</span>
-          </div>
-        </div>
-      </div>
-    `;
+    // Create overlay structure safely using DOM methods
+    this.overlay.innerHTML = ''; // Clear any existing content
+
+    const container = document.createElement('div');
+    container.className = 'monitor-container';
+
+    const header = document.createElement('div');
+    header.className = 'monitor-header';
+
+    // Safely create thumbnail image
+    const thumbnail = document.createElement('img');
+    thumbnail.className = 'channel-thumbnail';
+    thumbnail.src = this.sanitizeUrl(thumbnailUrl);
+    thumbnail.alt = this.sanitizeText(channelName) + ' thumbnail';
+    thumbnail.onerror = function() { this.style.display = 'none'; };
+    header.appendChild(thumbnail);
+
+    // Safely create channel name
+    const channelNameSpan = document.createElement('span');
+    channelNameSpan.className = 'channel-name';
+    channelNameSpan.textContent = this.sanitizeText(channelName);
+    header.appendChild(channelNameSpan);
+
+    // Create header actions
+    const headerActions = document.createElement('div');
+    headerActions.className = 'header-actions';
+
+    const historyButton = document.createElement('button');
+    historyButton.className = 'history-button';
+    historyButton.id = 'history-button';
+    historyButton.title = 'Download Chat History CSV';
+    historyButton.textContent = '💾';
+    headerActions.appendChild(historyButton);
+
+    const closeButton = document.createElement('button');
+    closeButton.className = 'close-button';
+    closeButton.id = 'close-button';
+    closeButton.title = 'Close Extension';
+    closeButton.textContent = '×';
+    headerActions.appendChild(closeButton);
+
+    const dragHandle = document.createElement('span');
+    dragHandle.className = 'drag-handle';
+    dragHandle.textContent = '⋮⋮';
+    headerActions.appendChild(dragHandle);
+
+    header.appendChild(headerActions);
+    container.appendChild(header);
+
+    // Create stats section
+    const stats = document.createElement('div');
+    stats.className = 'monitor-stats';
+
+    // MPM stat
+    const mpmStat = document.createElement('div');
+    mpmStat.className = 'stat';
+    const mpmValue = document.createElement('span');
+    mpmValue.className = 'value';
+    mpmValue.id = 'mpm-value';
+    mpmValue.textContent = '0';
+    const mpmUnit = document.createElement('span');
+    mpmUnit.className = 'unit';
+    mpmUnit.textContent = 'msg/min';
+    mpmStat.appendChild(mpmValue);
+    mpmStat.appendChild(mpmUnit);
+    stats.appendChild(mpmStat);
+
+    // MPS stat
+    const mpsStat = document.createElement('div');
+    mpsStat.className = 'stat';
+    const mpsValue = document.createElement('span');
+    mpsValue.className = 'value';
+    mpsValue.id = 'mps-value';
+    mpsValue.textContent = '0';
+    const mpsUnit = document.createElement('span');
+    mpsUnit.className = 'unit';
+    mpsUnit.textContent = 'msg/sec';
+    mpsStat.appendChild(mpsValue);
+    mpsStat.appendChild(mpsUnit);
+    stats.appendChild(mpsStat);
+
+    // Unique stat
+    const uniqueStat = document.createElement('div');
+    uniqueStat.className = 'stat';
+    const uniqueValue = document.createElement('span');
+    uniqueValue.className = 'value';
+    uniqueValue.id = 'unique-value';
+    uniqueValue.textContent = '0';
+    const uniqueUnit = document.createElement('span');
+    uniqueUnit.className = 'unit';
+    uniqueUnit.textContent = 'unique';
+    uniqueStat.appendChild(uniqueValue);
+    uniqueStat.appendChild(uniqueUnit);
+    stats.appendChild(uniqueStat);
+
+    // Timer display
+    const timerDisplay = document.createElement('div');
+    timerDisplay.className = 'timer-display';
+    const timerValue = document.createElement('span');
+    timerValue.className = 'timer-value';
+    timerValue.id = 'timer-value';
+    timerValue.textContent = '00:00:00';
+    timerDisplay.appendChild(timerValue);
+    stats.appendChild(timerDisplay);
+
+    container.appendChild(stats);
+    this.overlay.appendChild(container);
 
     // Make overlay draggable
     this.makeDraggable();
@@ -2271,6 +2348,26 @@ class TwitchChatMonitor {
     }
   }
 
+  sanitizeText(text) {
+    // Remove HTML tags and escape special characters
+    if (typeof text !== 'string') return '';
+    return text.replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/&/g, '&amp;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&#x27;')
+               .replace(/\//g, '&#x2F;');
+  }
+
+  sanitizeUrl(url) {
+    // Basic URL validation and sanitization
+    if (typeof url !== 'string') return '';
+    // Only allow http/https URLs
+    if (!url.match(/^https?:\/\//)) return '';
+    // Remove any potentially dangerous characters
+    return url.replace(/[<>"']/g, '');
+  }
+
   setupCloseButton() {
     const closeButton = this.overlay.querySelector('#close-button');
     if (closeButton) {
@@ -2522,26 +2619,82 @@ class TwitchChatMonitor {
 
     const tbody = this.historyTable.querySelector('#history-table-body');
 
+    // Clear existing content safely
+    tbody.innerHTML = '';
+
     if (history.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="no-data">No chat history available</td></tr>';
+      // Create no-data row safely
+      const noDataRow = document.createElement('tr');
+      const noDataCell = document.createElement('td');
+      noDataCell.colSpan = 8;
+      noDataCell.className = 'no-data';
+      noDataCell.textContent = 'No chat history available';
+      noDataRow.appendChild(noDataCell);
+      tbody.appendChild(noDataRow);
       return;
     }
 
-    tbody.innerHTML = history.map(session => `
-      <tr>
-        <td class="streamer-cell">
-          <img src="${session.channelAvatar}" alt="${session.channelName}" class="history-avatar" onerror="this.style.display='none'">
-          <span>${session.channelName}</span>
-        </td>
-        <td>${this.formatMessageRate(session.avgMessagesPerMinute, 'mpm')}</td>
-        <td>${this.formatMessageRate(session.avgMessagesPerSecond, 'mps')}</td>
-        <td>${session.uniqueChatters || 0}</td>
-        <td><span class="platform-badge platform-${session.platform || 'unknown'}">${this.formatPlatformName(session.platform || 'unknown')}</span></td>
-        <td>${this.formatElapsedTime(session.sessionDuration)}</td>
-        <td>${session.avgViewers > 0 ? session.avgViewers.toLocaleString() : 'N/A'}</td>
-        <td>${session.formattedDate}</td>
-      </tr>
-    `).join('');
+    // Create table rows safely using DOM methods
+    history.forEach(session => {
+      const row = document.createElement('tr');
+
+      // Streamer cell
+      const streamerCell = document.createElement('td');
+      streamerCell.className = 'streamer-cell';
+
+      const streamerImg = document.createElement('img');
+      streamerImg.src = this.sanitizeUrl(session.channelAvatar);
+      streamerImg.alt = this.sanitizeText(session.channelName);
+      streamerImg.className = 'history-avatar';
+      streamerImg.onerror = function() { this.style.display = 'none'; };
+      streamerCell.appendChild(streamerImg);
+
+      const streamerSpan = document.createElement('span');
+      streamerSpan.textContent = this.sanitizeText(session.channelName);
+      streamerCell.appendChild(streamerSpan);
+
+      row.appendChild(streamerCell);
+
+      // MPM cell
+      const mpmCell = document.createElement('td');
+      mpmCell.textContent = this.formatMessageRate(session.avgMessagesPerMinute, 'mpm');
+      row.appendChild(mpmCell);
+
+      // MPS cell
+      const mpsCell = document.createElement('td');
+      mpsCell.textContent = this.formatMessageRate(session.avgMessagesPerSecond, 'mps');
+      row.appendChild(mpsCell);
+
+      // Unique chatters cell
+      const uniqueCell = document.createElement('td');
+      uniqueCell.textContent = session.uniqueChatters || 0;
+      row.appendChild(uniqueCell);
+
+      // Platform cell
+      const platformCell = document.createElement('td');
+      const platformBadge = document.createElement('span');
+      platformBadge.className = `platform-badge platform-${session.platform || 'unknown'}`;
+      platformBadge.textContent = this.formatPlatformName(session.platform || 'unknown');
+      platformCell.appendChild(platformBadge);
+      row.appendChild(platformCell);
+
+      // Duration cell
+      const durationCell = document.createElement('td');
+      durationCell.textContent = this.formatElapsedTime(session.sessionDuration);
+      row.appendChild(durationCell);
+
+      // Viewers cell
+      const viewersCell = document.createElement('td');
+      viewersCell.textContent = session.avgViewers > 0 ? session.avgViewers.toLocaleString() : 'N/A';
+      row.appendChild(viewersCell);
+
+      // Date cell
+      const dateCell = document.createElement('td');
+      dateCell.textContent = session.formattedDate;
+      row.appendChild(dateCell);
+
+      tbody.appendChild(row);
+    });
   }
 
   formatMessageRate(rate, type = 'mpm') {
