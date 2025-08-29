@@ -100,22 +100,13 @@ The exported CSV file includes:
 The extension automatically detects and adapts to different streaming platforms:
 
 ### Twitch.tv
-- **URL Pattern**: `https://www.twitch.tv/channelname`
-- **Example**: `https://www.twitch.tv/quin69`
-- **Theme**: Purple text (#9146ff) with Twitch branding
-- **Chat Detection**: Uses Twitch's proprietary chat structure
+
 
 ### YouTube
-- **URL Pattern**: `https://www.youtube.com/watch?v=VIDEO_ID`
-- **Example**: `https://www.youtube.com/watch?v=eJD1Ja03IOY`
-- **Theme**: Red text (#ff0000) matching YouTube's brand colors
-- **Chat Detection**: Uses YouTube Live Chat API structure
+
 
 ### Kick.com
-- **URL Pattern**: `https://kick.com/channelname`
-- **Example**: `https://kick.com/destiny`
-- **Theme**: Green text (#00ff00) with Kick branding
-- **Chat Detection**: Uses Kick's chat message structure
+
 
 ## Technical Details
 
@@ -158,12 +149,6 @@ The extension automatically detects and adapts to different streaming platforms:
 3. Test on various Twitch channel pages
 4. Check console logs for debugging information
 
-### Performance Considerations
-- Uses efficient DOM observation with MutationObserver
-- Implements time-windowed calculations to manage memory
-- Limits performance impact on the host page
-- Includes cleanup routines to prevent memory leaks
-
 ## Privacy & Security
 
 - **No Data Collection**: The extension does not collect or transmit any user data
@@ -171,47 +156,9 @@ The extension automatically detects and adapts to different streaming platforms:
 - **Minimal Permissions**: Only requests necessary permissions for functionality
 - **Secure Storage**: User settings stored securely using Chrome storage API
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly on different Twitch pages
-5. Submit a pull request
 
-## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Changelog
 
-### Version 1.0.0
-- Initial release
-- Real-time chat activity monitoring
-- Customizable overlay display
-- Settings panel for user preferences
-- Support for Manifest V3
 
-## Support
-
-If you encounter any issues or have suggestions:
-1. Check the console logs for error messages
-2. Verify you're on a valid Twitch channel page
-3. Try refreshing the page
-4. Check the extension settings
-
-For bug reports or feature requests, please create an issue on GitHub.
-
-## Roadmap
-
-- [ ] Advanced analytics and data export
-- [ ] Peak activity notifications
-- [ ] Multiple theme options
-- [ ] Chat activity history
-- [ ] Performance metrics dashboard
-- [ ] Mobile browser support
-- [ ] Firefox extension port
-
----
-
-**Made with ❤️ for the Twitch community**
