@@ -23,6 +23,10 @@ A Chrome extension that monitors real-time chat activity on **Twitch.tv, YouTube
 
 ## Installation
 
+### From Chrome Webstore
+
+https://chromewebstore.google.com/detail/twitch-youtube-kick-chat/ahpkkbbonbehfpcbpgnpoanckakgogek?authuser=0&hl=en-GB
+
 ### For Development
 1. Clone this repository
 2. Open Chrome and navigate to `chrome://extensions/`
